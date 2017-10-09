@@ -6,7 +6,7 @@ Main repo: [basketapp-backend](https://github.com/BertGoens/basketapp-backend)
 
 ## Why Nginx
 
-Nginx has some advantageous features
+EngineX (nginx) has some advantageous features
 - Easy to install
 - Easy to configure
 - Extremely fast at serving static files
@@ -17,6 +17,8 @@ NodeJS is notoriously bad at serving static files and SSL.
 If we put Nginx in front of NodeJS we gain tremendous speed plus better security.
 
 ## Installing / Getting started
+Look at /install and follow the guide for your OS.
+
 Download, install and start the service
 ```bash
 # MacOS (Homebrew)
@@ -24,15 +26,18 @@ Download, install and start the service
 brew link pcre
 brew install nginx
 sudo nginx
-# Ubuntu
-sudo apt-get update
-sudo apt-get install nginx
 # Windows
 # Download the latest nginx version at http://nginx.org/en/download.html
 unzip nginx-1.3.13.zip
 cd nginx-1.3.13
 start nginx
 ```
+
+You should have a default page on [localhost:80](http://localhost:80)
+
+Modify the nginx.conf in the correct location and restart Nginx.
+
+MacOs: /usr/local/etc/nginx/
 
 ## Editing the config
 Modify `nginx.conf` and execute the following command to load the new config.
@@ -50,8 +55,6 @@ nginx -t
 ```bash
 # MacOS 
 sudo nginx -s stop && sudo nginx
-# Ubuntu
-sudo service nginx restart
 # Windows
 nginx -s reload
 ```
