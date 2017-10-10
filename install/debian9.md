@@ -14,6 +14,7 @@ The configuration files can be found in
 
 ## Nginx
 
-- Start nginx: `sudo service nginx start`  
-- Restart nginx: `sudo service nginx restart`
+- Start nginx: `sudo systemctl start nginx`  
+- Restart nginx: `sudo systemctl restart nginx`
 - Config check: `sudo nginx -t`
+- Status check: `sudo systemctl status nginx`
