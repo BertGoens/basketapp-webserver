@@ -1,0 +1,17 @@
+# create the database
+sudo mysqladmin -p create basketapp
+
+# log in
+sudo mysql -p basketapp
+# enter the root mysql password
+
+GRANT CREATE, SELECT, INSERT, UPDATE, DELETE ON basketapp.* TO 'produser'@'%' IDENTIFIED BY 'prodsecret';
+FLUSH PRIVILEGES;
+
+# Create table script 
+# use basketapp
+# paste the contents of the script
+
+# OR force create the tables with the app
+
+quit

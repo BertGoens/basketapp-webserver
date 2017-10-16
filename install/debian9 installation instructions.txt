@@ -1,0 +1,48 @@
+# Update your system
+sudo apt-get update
+sudo apt-get upgrade
+
+# Install sudo
+apt install -y sudo
+# Add user bert to sudo group
+useradd bert
+gpasswd -a bert sudo
+
+# Install nginx
+sudo apt-get install -y nginx
+# We can make sure that our web server will restart automatically when the server is rebooted by typing:
+sudo systemctl enable nginx
+
+# Install MySql
+sudo apt-get install -y mysql-server
+# Harden mysql server 
+sudo mysql_secure_installation
+mysql -v
+quit
+
+# Install Node (through Node Version Manager:NVM)
+# Install nvm
+sudo apt-get install -y build-essential libssl-dev
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+source ~/.profile
+nvm install 8.1.4
+node -v
+
+# Install NodeJS tools (node package manager)
+npm install -g yarn
+npm install -g pm2
+
+pm2 startup systemd
+
+# SSH Config (allow for sftp)
+sudo nano /etc/ssh/sshd_config
+# Comment the following line by adding a hashtag in front of it
+Subsystem sftp /usr/lib/openssh/sftp-server
+# Add the following line below
+Subsystem sftp internal-sftp
+# Now restart ssh
+sudo systemctl restart ssh
+# You should be able to use filezilla if you so desire
+
+# Install git
+sudo apt-get install -y git

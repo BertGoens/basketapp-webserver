@@ -1,0 +1,55 @@
+# Deploy website
+
+# Set up mysql database (basketapp sql.txt)
+
+# Set up nginx
+# upload config files (with filezilla)
+	nginx.conf
+	honeypot_challenge.conf
+	env.ts —> basketapp-backend/server/src/config/env
+	basketapp.sql
+
+cd /etc/nginx/sites-available
+sudo cp ~/honeypot_challenge.conf .
+sudo rm /etc/nginx/sites-enabled/default
+sudo ln -s /etc/nginx/sites-available/honeypot_challenge.conf /etc/nginx/sites-enabled/
+
+cd /etc/nginx
+sudo cp nginx.conf nginx.conf.backup
+sudo rm nginx.conf
+sudo cp ~/nginx.conf .
+
+# let nginx test our conf settings 
+sudo nginx -t
+
+# restart nginx
+sudo systemctl stop nginx
+sudo systemctl start nginx
+sudo systemctl status nginx
+
+# test your browser, it should display a nice 404
+
+sudo mkdir /var/www/honeypot
+sudo chown -R $USER:$USER /var/www/honeypot
+cd /var/www/honeypot
+sudo git clone https://github.com/BertGoens/basketapp-backend.git
+sudo git clone https://github.com/BertGoens/basketapp-frontend.git
+
+# install && build 
+cp ~/env.ts /var/www/honeypot/basketapp-backend/server/src/config/env/
+cd /var/www/honeypot/basketapp-backend && yarn && yarn build
+chmod +x /var/www/honeypot/basketapp-backend/server/dist/server.js
+cd /var/www/honeypot/basketapp-frontend/ && yarn && yarn build
+
+cd ~
+# pm2 start
+pm2 start /var/www/honeypot/basketapp-backend/server/dist/server.js --name basketapp
+# The startup subcommand generates and configures a startup script to launch PM2 and its managed processes on server boots:
+pm2 startup systemd
+
+#The last line of the resulting output will include a command that you must run with superuser privileges:
+# example output:
+#Output
+#[PM2] Init System found: systemd
+#[PM2] You have to run this command as root. Execute the following #command:
+#sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u sammy --hp /home/sammy
